@@ -12,7 +12,7 @@
 | Nome Completo | RA | Responsabilidade Principal |
 | :--- | :--- | :--- |
 | João Vitor Cardoso da Silva | 26001322-2 | Arquitetura geral, fluxo principal (`main.c`) persistência e documentação técnica|
-| Arthur Navarete | 26002044-2 | Modelagem de dados (`pokemon.h`) catálogo de criaturas e sistema de inventário |
+| Arthur Navarete | 26002044-2 | Modelagem de dados (`pokemon.h` / `tone.h`) catálogo de criaturas e sistema de inventário e musica tema do jogo|
 | André Dias | 26001552-2 | Mecânica de combate (`batalha.c` / `batalha.h`)cálculo de dano e capturas |
 
 
