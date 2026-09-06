@@ -48,6 +48,7 @@ pokemon-rpg/
 │   ├── batalha.c       # Implementação do ciclo de rodadas e cálculo de dano
 │   ├── arquivos.c      # Implementação do tratamento e leitura/escrita de arquivos
 │   └── main.c          # Ponto de entrada, menu inicial e loop central
+|   └── main.c          # Musica tema do jogo
 ├── data/
 │   └── save.txt        # Registro persistente dos dados do jogador
 └── README.md           # Documentação técnica do repositório
