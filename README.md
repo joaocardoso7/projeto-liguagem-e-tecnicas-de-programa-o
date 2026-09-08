@@ -43,12 +43,13 @@ pokemon-rpg/
 │   ├── pokemon.h       # Declarações das structs e catálogo de Pokémon/ataques
 │   ├── batalha.h       # Protótipos das funções do motor de combate
 │   └── arquivos.h      # Protótipos das rotinas de salvar/carregar jogo
+|   └── tone.h          # Musica tema do jogo
 ├── src/
 │   ├── pokemon.c       # Implementação das regras dos Pokémon
 │   ├── batalha.c       # Implementação do ciclo de rodadas e cálculo de dano
 │   ├── arquivos.c      # Implementação do tratamento e leitura/escrita de arquivos
 │   └── main.c          # Ponto de entrada, menu inicial e loop central
-|   └── tone.h          # Musica tema do jogo
+         
 ├── data/
 │   └── save.txt        # Registro persistente dos dados do jogador
 └── README.md           # Documentação técnica do repositório
