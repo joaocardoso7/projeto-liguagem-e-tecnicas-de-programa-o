@@ -24,3 +24,11 @@ void inicializar_treinador(Treinador *treinador, const char *nome) {
     treinador->pokebolas = 5;
     treinador->pocoes = 3;
 }
+void mostrar_time(Treinador *treinador) {
+    printf("\n===== MEU TIME =====\n");
+
+    for (int i = 0; i < treinador->qtd_pokemon; i++) {
+        printf("\nPokemon %d:\n", i + 1);
+        mostrar_pokemon(&treinador->time[i]);
+    }
+}
