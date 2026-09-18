@@ -32,4 +32,12 @@ typedef struct {
     int pocoes;
 } Treinador;
 
+
+// Funções
+void mostrar_pokemon(Pokemon *pokemon);
+
+void mostrar_inventario(Treinador *treinador);
+
+void inicializar_treinador(Treinador *treinador, const char *nome);
+
 #endif
