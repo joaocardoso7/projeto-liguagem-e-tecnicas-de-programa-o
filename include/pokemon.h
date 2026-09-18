@@ -8,10 +8,10 @@
 typedef struct {
     char nome[30];
     int poder;
-    char tipo[15]; // "Fogo", "Agua", "Planta", "Normal"
+    char tipo[15];
 } Ataque;
 
-// Representação de uma criatura
+// Representação de um Pokémon
 typedef struct {
     char nome[30];
     char tipo[15];
@@ -20,10 +20,10 @@ typedef struct {
     int nivel;
     int ataque;
     int defesa;
-    Ataque ataques[MAX_ATAQUES]; // Vetor homogêneo de structs
+    Ataque ataques[MAX_ATAQUES];
 } Pokemon;
 
-// Representação do Jogador / Treinador
+// Representação do jogador / treinador
 typedef struct {
     char nome[50];
     Pokemon time[MAX_TIME];
