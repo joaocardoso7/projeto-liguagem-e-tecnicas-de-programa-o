@@ -3,7 +3,7 @@
 **Disciplina:** Linguagem e Técnicas de Programação  
 **Docente:** Prof. Dacio Machado  
 **Curso:** Engenharia de Software / ADS  
-**Avaliação Inicial:** 24 de Setembro de 2026  
+
 
 ---
 
