@@ -98,4 +98,89 @@ typedef struct {
 
 ---
 
-##
+## 5. Fluxogramas e Estrutura Lógica
+
+### 5.1 Fluxo Geral da Aplicação
+
+```mermaid
+flowchart TD
+    Inicio(["Início"]) --> Menu["Exibir Menu Principal"]
+    
+    Menu --> Opcao{"Qual a opção?"}
+    
+    Opcao -->|1: Novo Jogo| Cadastro["Cadastrar Treinador e Escolher Inicial"]
+    Opcao -->|2: Carregar Jogo| LerArquivo["Ler dados de save.txt"]
+    Opcao -->|3: Sair| Fim(["Encerrar Programa"])
+    
+    LerArquivo --> ArquivoExiste{"Arquivo existe?"}
+    ArquivoExiste -->|Sim| Carregado["Restaurar equipe e inventário"]
+    ArquivoExiste -->|Não| ErroArquivo["Avisar erro: Arquivo não encontrado"]
+    ErroArquivo --> Menu
+    
+    Cadastro --> AcaoMenu
+    Carregado --> AcaoMenu
+    
+    subgraph AreaExploracao ["Loop Principal de Exploração"]
+        AcaoMenu{"Escolha a ação"}
+        AcaoMenu -->|Explorar| Batalha["Iniciar Batalha Selvagem"]
+        AcaoMenu -->|Mochila| ExibirMochila["Exibir Equipe e Itens"]
+        AcaoMenu -->|Salvar| GravarArquivo["Gravar dados em save.txt"]
+        
+        ExibirMochila --> AcaoMenu
+        GravarArquivo --> AcaoMenu
+        Batalha --> AcaoMenu
+    end
+
+    AcaoMenu -->|Menu Principal| Menu
+```
+
+### 5.2 Lógica de Combate por Turnos
+
+```mermaid
+flowchart TD
+    InicioBatalha(["Início do Combate"]) --> GerarInimigo["Sortear Pokémon Selvagem"]
+    GerarInimigo --> ExibirStatus["Exibir HP do Jogador e do Inimigo"]
+    
+    ExibirStatus --> AcaoJogador{"Ação do Jogador"}
+    
+    AcaoJogador -->|1: Atacar| EscolherGolpe["Selecionar Golpe"]
+    EscolherGolpe --> DanoInimigo["Calcular e Aplicar Dano no Inimigo"]
+    
+    AcaoJogador -->|2: Capturar| TemPokebola{"Tem Pokébola?"}
+    TemPokebola -->|Sim| TentarCaptura["Consumir 1 Pokébola e Rolar Chance"]
+    TemPokebola -->|Não| SemItem["Avisar: Sem Pokébolas disponíveis"] --> ExibirStatus
+    
+    AcaoJogador -->|3: Usar Poção| TemPocao{"Tem Poção?"}
+    TemPocao -->|Sim| Curar["Consumir 1 Poção e Restaurar HP"]
+    TemPocao -->|Não| SemItem2["Avisar: Sem Poções disponíveis"] --> ExibirStatus
+    
+    AcaoJogador -->|4: Fugir| ChanceFuga{"Sucesso na Fuga?"}
+    ChanceFuga -->|Sim| FugaSucesso["Fuga realizada com sucesso!"] --> FimCombate(["Fim da Batalha"])
+    ChanceFuga -->|Não| FugaFalhou["Falha ao fugir!"] --> TurnoInimigo
+    
+    TentarCaptura --> Capturou{"Capturou?"}
+    Capturou -->|Sim| MsgCaptura["Pokémon capturado e adicionado ao time"] --> FimCombate
+    Capturou -->|Não| TurnoInimigo
+    
+    DanoInimigo --> InimigoDerrotado{"HP Inimigo <= 0?"}
+    InimigoDerrotado -->|Sim| Vitoria["Vitória! Oponente fora de combate"] --> FimCombate
+    InimigoDerrotado -->|Não| TurnoInimigo["Turno do Inimigo: Executa Golpe"]
+    
+    Curar --> TurnoInimigo
+    
+    TurnoInimigo --> DanoJogador["Subtrair HP do Jogador"]
+    DanoJogador --> JogadorDerrotado{"HP Jogador <= 0?"}
+    
+    JogadorDerrotado -->|Não| ExibirStatus
+    JogadorDerrotado -->|Sim| TemOutroPokemon{"Existe outro Pokémon vivo?"}
+    TemOutroPokemon -->|Sim| TrocarPokemon["Substituir pelo próximo Pokémon"] --> ExibirStatus
+    TemOutroPokemon -->|Não| Derrota["Todos os Pokémon desmaiaram!"] --> FimCombate
+```
+
+---
+
+## 6. Tratamento de Erros e Validações
+
+- **Tratamento de Ficheiros:** Verificação defensiva de ponteiro (`FILE *fptr != NULL`). Se `save.txt` estiver corrompido ou ausente no carregamento, o utilizador é alertado sem que ocorra encerramento abrupto (*segmentation fault*). Todo o fluxo encerra os seus descritores com `fclose()`.
+- **Proteção de Vetores e Menus:** Validação contra valores numéricos inválidos nos menus e na seleção de ataques para prevenir acessos a posições indevidas de memória (*buffer overflow* / índices fora de alcance).
+- **Consistência de Dados de Combate:** Travas lógicas para que valores de vida (`vida_atual`) nunca ultrapassem `vida_max` após o uso de poções e nunca fiquem negativos no ecrã após ataques sofridos.
