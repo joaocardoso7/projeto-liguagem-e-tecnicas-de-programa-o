@@ -1,15 +1,28 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "batalha.h"
+#include "../include/batalha.h"
 
-int calcular_dano(Pokemon *atacante, Pokemon *defensor, Ataque *golpe) {
-    int dano = atacante->ataque + golpe->poder - defensor->defesa / 2;
-
-    // Vantagem de tipo (exemplo: Fogo ganha de Planta)
-    if (strcmp(golpe->tipo, "Fogo") == 0 && strcmp(defensor->tipo, "Planta") == 0) {
-        dano = dano * 2;
+float multiplicador_tipo(const char *tipo_golpe, const char *tipo_defensor) {
+    if (strcmp(tipo_golpe, "Fogo") == 0) {
+        if (strcmp(tipo_defensor, "Planta") == 0) return 2.0f;
+        if (strcmp(tipo_defensor, "Agua") == 0)   return 0.5f;
+    } else if (strcmp(tipo_golpe, "Agua") == 0) {
+        if (strcmp(tipo_defensor, "Fogo") == 0)   return 2.0f;
+        if (strcmp(tipo_defensor, "Planta") == 0) return 0.5f;
+    } else if (strcmp(tipo_golpe, "Planta") == 0) {
+        if (strcmp(tipo_defensor, "Agua") == 0)   return 2.0f;
+        if (strcmp(tipo_defensor, "Fogo") == 0)   return 0.5f;
     }
+    return 1.0f;
+}
+
+// Formula baseada no nivel: com nivel 5, ataque 10, defesa 10 e poder 40
+// o dano normal e 5 (10 com vantagem de tipo).
+int calcular_dano(Pokemon *atacante, Pokemon *defensor, Ataque *golpe) {
+    int defesa = defensor->defesa > 0 ? defensor->defesa : 1;
+    int base = (2 * atacante->nivel / 5 + 2) * golpe->poder * atacante->ataque / defesa / 50 + 2;
+    int dano = (int)(base * multiplicador_tipo(golpe->tipo, defensor->tipo));
     if (dano < 1) dano = 1;  // dano minimo
     return dano;
 }
