@@ -3,6 +3,7 @@
 
 #include "pokemon.h"
 
+float multiplicador_tipo(const char *tipo_golpe, const char *tipo_defensor);
 int calcular_dano(Pokemon *atacante, Pokemon *defensor, Ataque *golpe);
 void aplicar_dano(Pokemon *p, int dano);
 int tentar_captura(Treinador *t, Pokemon *selvagem);
