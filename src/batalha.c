@@ -51,3 +51,15 @@ int tentar_captura(Treinador *t, Pokemon *selvagem) {
     printf("%s escapou!\n", selvagem->nome);
     return 0;
 }
+
+void exibir_status(const Pokemon *p) {
+    int tamanho = 20;
+    int cheios = p->vida_atual * tamanho / p->vida_max;
+
+    printf("%s (%s) Nv.%d\n", p->nome, p->tipo, p->nivel);
+    printf("HP [");
+    for (int i = 0; i < tamanho; i++) {
+        putchar(i < cheios ? '#' : '-');
+    }
+    printf("] %d/%d\n\n", p->vida_atual, p->vida_max);
+}
