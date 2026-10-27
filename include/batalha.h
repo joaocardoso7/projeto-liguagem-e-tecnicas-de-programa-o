@@ -8,4 +8,6 @@ int calcular_dano(Pokemon *atacante, Pokemon *defensor, Ataque *golpe);
 void aplicar_dano(Pokemon *p, int dano);
 int tentar_captura(Treinador *t, Pokemon *selvagem);
 
+void exibir_status(const Pokemon *p);
+
 #endif
